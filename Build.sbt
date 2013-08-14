@@ -20,6 +20,6 @@ libraryDependencies ++= Seq("org.skife.com.typesafe.config" % "typesafe-config" 
 
 version := "1.0.0-SNAPSHOT"
 
-publishTo := Some(Resolver.url("samadi-snapshot", new URL("http://192.168.10.30:8081/artifactory/samadi-snapshot-local/")))
+publishTo := Some(Resolver.url("ghasemz-snapshot", new URL("http://192.168.10.30:8081/artifactory/ghasemz-snapshot-local/")))
 
 credentials += Credentials(Path.userHome / ".sbt" / ".credentials")
