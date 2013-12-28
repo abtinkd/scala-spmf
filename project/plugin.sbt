@@ -1,5 +1,3 @@
-addSbtPlugin("com.eed3si9n" % "sbt-unique-version" % "latest.integration")
-
 addSbtPlugin("com.typesafe.sbt" % "sbt-multi-jvm" % "0.3.6")
 
 addSbtPlugin("org.scala-sbt.plugins" % "sbt-onejar" % "0.8")
