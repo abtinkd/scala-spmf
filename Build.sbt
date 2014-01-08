@@ -16,7 +16,9 @@ libraryDependencies ++= Seq("org.skife.com.typesafe.config" % "typesafe-config" 
   , "io.spray" % "spray-json_2.10.0-RC5" % "1.2.3"
   , "org.scalatest" %% "scalatest" % "1.9" % "test"
   , "org.scala-lang" % "scala-reflect" % "2.10.2"
-  , "org.scala-lang" % "scala-library" % "2.10.2")
+  , "org.scala-lang" % "scala-library" % "2.10.2"
+  , "mysql" % "mysql-connector-java" % "latest.integration"
+  , "com.philippe-fournier-viger" %% "spmf" % "0.94")
 
 version := "1.0.0-SNAPSHOT"
 
