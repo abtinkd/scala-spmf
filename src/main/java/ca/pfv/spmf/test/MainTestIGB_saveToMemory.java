@@ -49,7 +49,7 @@ public class MainTestIGB_saveToMemory {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestIGB_saveToMemory.class.getResource(filename);
+        URL url = MainTestIGB_saveToMemory.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

@@ -48,7 +48,7 @@ public class MainTestEclat_saveToMemory {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestEclat_saveToMemory.class.getResource(filename);
+        URL url = MainTestEclat_saveToMemory.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

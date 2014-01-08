@@ -26,7 +26,7 @@ public class MainTestDCI_Closed_Optimized {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestDCI_Closed_Optimized.class.getResource(filename);
+        URL url = MainTestDCI_Closed_Optimized.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

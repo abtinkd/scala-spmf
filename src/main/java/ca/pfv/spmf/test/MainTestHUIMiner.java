@@ -29,7 +29,7 @@ public class MainTestHUIMiner {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestHUIMiner.class.getResource(filename);
+        URL url = MainTestHUIMiner.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

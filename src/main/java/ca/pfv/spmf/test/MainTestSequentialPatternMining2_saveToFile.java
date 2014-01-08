@@ -34,7 +34,7 @@ public class MainTestSequentialPatternMining2_saveToFile {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestSequentialPatternMining2_saveToFile.class.getResource(filename);
+        URL url = MainTestSequentialPatternMining2_saveToFile.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

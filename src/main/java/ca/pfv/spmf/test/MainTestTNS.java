@@ -33,7 +33,7 @@ public class MainTestTNS {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestTNS.class.getResource(filename);
+        URL url = MainTestTNS.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

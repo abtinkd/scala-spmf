@@ -20,7 +20,7 @@ public class MainTestMultiDimSequentialPatternMining {
     public static void main(String[] arg) throws IOException {
         // Minimum absolute support = 75 %
         double minsupp = 0.75;
-        String input = fileToPath("ContextMDSequenceNoTime.txt");
+        String input = fileToPath("/ContextMDSequenceNoTime.txt");
         String output = ".//output.txt";
 
         // Load a sequence database
@@ -45,7 +45,8 @@ public class MainTestMultiDimSequentialPatternMining {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestMultiDimSequentialPatternMining.class.getResource(filename);
+
+        URL url = MainTestMultiDimSequentialPatternMining.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

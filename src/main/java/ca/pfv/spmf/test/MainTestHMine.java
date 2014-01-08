@@ -27,7 +27,7 @@ public class MainTestHMine {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestHMine.class.getResource(filename);
+        URL url = MainTestHMine.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

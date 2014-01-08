@@ -26,7 +26,7 @@ public class MainTestConvertTransactionDatabaseCSVtoSPMF {
 
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestConvertTransactionDatabaseCSVtoSPMF.class.getResource(filename);
+        URL url = MainTestConvertTransactionDatabaseCSVtoSPMF.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

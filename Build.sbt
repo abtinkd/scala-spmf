@@ -1,18 +1,16 @@
-import scala._
-import scala.Some
 
 
 mainClass in oneJar := Some("com.tahlilafzar.snow.boot.main")
 
 seq(com.github.retronym.SbtOneJar.oneJarSettings: _*)
 
-name := "scala-sbt"
+name := "spmf"
 
-version := "1.0.0-SNAPSHOT"
+version := "0.94"
 
 scalaVersion := "2.10.2"
 
-organization := "com.tahlilafzar"
+organization := "com.philippe-fournier-viger"
 
 
 libraryDependencies ++= Seq(
@@ -42,7 +40,9 @@ testFrameworks += new TestFramework(
 
 logBuffered := false
 
+publishMavenStyle := true
 
-publishTo := Some(Resolver.url("ghasemz-snapshot-local", new URL("http://tahlilafzar.com:8081/artifactory/ghasemz-snapshot-local/")))
+publishTo := Some(Resolver.url("libs-snapshot-local", new URL("http://tahlilafzar.com:8081/artifactory/libs-snapshot-local/")))
+
 
 credentials += Credentials(Path.userHome / ".sbt" / ".credentials")

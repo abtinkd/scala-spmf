@@ -63,7 +63,7 @@ public class MainTestCharmMFI_saveToMemory {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestCharmMFI_saveToMemory.class.getResource(filename);
+        URL url = MainTestCharmMFI_saveToMemory.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

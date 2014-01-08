@@ -29,7 +29,7 @@ public class MainTestIndirectRules_saveToFile {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestIndirectRules_saveToFile.class.getResource(filename);
+        URL url = MainTestIndirectRules_saveToFile.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

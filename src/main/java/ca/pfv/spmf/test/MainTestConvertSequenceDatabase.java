@@ -26,7 +26,7 @@ public class MainTestConvertSequenceDatabase {
 
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestConvertSequenceDatabase.class.getResource(filename);
+        URL url = MainTestConvertSequenceDatabase.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

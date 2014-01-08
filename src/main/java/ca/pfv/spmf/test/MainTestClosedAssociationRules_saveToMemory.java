@@ -53,7 +53,7 @@ public class MainTestClosedAssociationRules_saveToMemory {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestClosedAssociationRules_saveToMemory.class.getResource(filename);
+        URL url = MainTestClosedAssociationRules_saveToMemory.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

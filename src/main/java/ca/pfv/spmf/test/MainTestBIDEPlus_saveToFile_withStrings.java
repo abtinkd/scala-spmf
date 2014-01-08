@@ -31,7 +31,7 @@ public class MainTestBIDEPlus_saveToFile_withStrings {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestBIDEPlus_saveToFile_withStrings.class.getResource(filename);
+        URL url = MainTestBIDEPlus_saveToFile_withStrings.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

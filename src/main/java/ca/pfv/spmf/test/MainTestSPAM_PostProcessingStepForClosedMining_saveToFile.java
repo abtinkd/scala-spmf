@@ -60,7 +60,7 @@ public class MainTestSPAM_PostProcessingStepForClosedMining_saveToFile {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestClaSP_saveToFile.class.getResource(filename);
+        URL url = MainTestClaSP_saveToFile.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

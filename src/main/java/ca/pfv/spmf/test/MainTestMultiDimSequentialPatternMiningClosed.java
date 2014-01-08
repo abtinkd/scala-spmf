@@ -46,7 +46,7 @@ public class MainTestMultiDimSequentialPatternMiningClosed {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestMultiDimSequentialPatternMiningClosed.class.getResource(filename);
+        URL url = MainTestMultiDimSequentialPatternMiningClosed.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

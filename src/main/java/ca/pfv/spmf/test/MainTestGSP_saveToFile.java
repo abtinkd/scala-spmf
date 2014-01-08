@@ -45,7 +45,7 @@ public class MainTestGSP_saveToFile {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestGSP_saveToMemory.class.getResource(filename);
+        URL url = MainTestGSP_saveToMemory.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

@@ -26,7 +26,7 @@ public class MainTestMSApriori_saveToFile {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestMSApriori_saveToFile.class.getResource(filename);
+        URL url = MainTestMSApriori_saveToFile.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

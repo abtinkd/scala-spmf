@@ -31,7 +31,7 @@ public class MainTestAprioriTID {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestAprioriTID.class.getResource(filename);
+        URL url = MainTestAprioriTID.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

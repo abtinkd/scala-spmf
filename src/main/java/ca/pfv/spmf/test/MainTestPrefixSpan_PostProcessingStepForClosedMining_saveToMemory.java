@@ -52,7 +52,7 @@ public class MainTestPrefixSpan_PostProcessingStepForClosedMining_saveToMemory {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestCloSpan_saveToFile.class.getResource(filename);
+        URL url = MainTestCloSpan_saveToFile.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

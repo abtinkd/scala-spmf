@@ -30,7 +30,7 @@ public class MainTestTRuleGrowth {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestTRuleGrowth.class.getResource(filename);
+        URL url = MainTestTRuleGrowth.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

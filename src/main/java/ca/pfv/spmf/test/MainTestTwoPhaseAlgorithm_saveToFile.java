@@ -37,7 +37,7 @@ public class MainTestTwoPhaseAlgorithm_saveToFile {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestTwoPhaseAlgorithm_saveToFile.class.getResource(filename);
+        URL url = MainTestTwoPhaseAlgorithm_saveToFile.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

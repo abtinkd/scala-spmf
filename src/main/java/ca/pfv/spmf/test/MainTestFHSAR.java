@@ -29,7 +29,7 @@ public class MainTestFHSAR {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestFHSAR.class.getResource(filename);
+        URL url = MainTestFHSAR.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

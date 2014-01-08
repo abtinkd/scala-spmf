@@ -35,7 +35,7 @@ public class MainTestTopSeqRules {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestTopSeqRules.class.getResource(filename);
+        URL url = MainTestTopSeqRules.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

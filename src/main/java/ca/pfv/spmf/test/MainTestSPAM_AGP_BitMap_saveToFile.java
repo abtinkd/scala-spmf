@@ -51,7 +51,7 @@ public class MainTestSPAM_AGP_BitMap_saveToFile {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestSPADE_AGP_FatBitMap_saveToFile.class.getResource(filename);
+        URL url = MainTestSPADE_AGP_FatBitMap_saveToFile.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

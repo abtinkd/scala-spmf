@@ -36,7 +36,7 @@ public class MainTestAprioriRare_saveToMemory {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestAprioriRare_saveToMemory.class.getResource(filename);
+        URL url = MainTestAprioriRare_saveToMemory.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

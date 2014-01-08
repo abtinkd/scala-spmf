@@ -35,7 +35,7 @@ public class MainTestCMDEO {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestCMDEO.class.getResource(filename);
+        URL url = MainTestCMDEO.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

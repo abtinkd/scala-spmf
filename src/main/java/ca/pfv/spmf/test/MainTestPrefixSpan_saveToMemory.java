@@ -32,7 +32,7 @@ public class MainTestPrefixSpan_saveToMemory {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestPrefixSpan_saveToMemory.class.getResource(filename);
+        URL url = MainTestPrefixSpan_saveToMemory.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

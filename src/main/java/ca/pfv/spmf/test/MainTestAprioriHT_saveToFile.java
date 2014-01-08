@@ -34,7 +34,7 @@ public class MainTestAprioriHT_saveToFile {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestAprioriHT_saveToFile.class.getResource(filename);
+        URL url = MainTestAprioriHT_saveToFile.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }

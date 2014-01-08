@@ -35,7 +35,7 @@ public class MainTestFPGrowth_saveToMemory {
     }
 
     public static String fileToPath(String filename) throws UnsupportedEncodingException {
-        URL url = MainTestFPGrowth_saveToMemory.class.getResource(filename);
+        URL url = MainTestFPGrowth_saveToMemory.class.getResource("/"+filename);
         return java.net.URLDecoder.decode(url.getPath(), "UTF-8");
     }
 }
