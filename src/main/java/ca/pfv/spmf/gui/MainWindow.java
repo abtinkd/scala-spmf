@@ -620,7 +620,7 @@ public class MainWindow extends JFrame {
                 openWebPage("http://www.philippe-fournier-viger.com/spmf/");
             }
         });
-        lblNewLabel.setIcon(new ImageIcon(MainWindow.class.getResource("spmf.png")));
+        lblNewLabel.setIcon(new ImageIcon(MainWindow.class.getResource("/spmf.png")));
         lblNewLabel.setBounds(0, 0, 186, 62);
         contentPane.add(lblNewLabel);
 
@@ -643,7 +643,7 @@ public class MainWindow extends JFrame {
                         // If there is no previous path (first time user), 
                         // show the files in the "examples" package of
                         // the spmf distribution.
-                        URL main = MainTestApriori_saveToFile.class.getResource("MainTestApriori_saveToFile.class");
+                        URL main = MainTestApriori_saveToFile.class.getResource("/ca/pfv/spmf/test/MainTestApriori_saveToFile.class");
                         if (!"file".equalsIgnoreCase(main.getProtocol())) {
                             path = null;
                         } else {
