@@ -20,9 +20,11 @@ class FreqTempPatt_DS(minSup: Float, winSizeN: Int, bufferStr: mutable.Buffer[St
   protected var transactionCount = 0
 
   // reads from buffer and then clears it for new data
-  def readBuffer() {
-    if (winCount > winSizeN)
+  def read_Clear_Buffer() {
+    if (winCount > winSizeN){
       nWinData -= nWinData.head
+      transactionCount -= nWinData.head.size
+    }
 
     else
       winCount += 1
@@ -37,16 +39,15 @@ class FreqTempPatt_DS(minSup: Float, winSizeN: Int, bufferStr: mutable.Buffer[St
       transList.addTransaction(itmSet)
     }
     nWinData += transList
-    transactionCount = transList.size
+    transactionCount += transList.size
     bufferStr.clear()
-    println("WINDATA!!!:\n" + nWinData + "\n\n")
   }
 
   def runAlgorithm() = {
-    readBuffer()
+    read_Clear_Buffer()
 
     FSet.resetCount()
-    FSet.countOneWin()
+    FSet.countOneWin(winSizeN)
 
     for (curWinData <- nWinData) {
       val curTransactions = curWinData.getTransactions()
@@ -64,31 +65,39 @@ class FreqTempPatt_DS(minSup: Float, winSizeN: Int, bufferStr: mutable.Buffer[St
             FSet.addSingItem(curItmValue)
 
         //counting compound items
-        for (size <- 2 to foundValSet.size)
-          for (foundVal <- foundValSet.subsets(size))
+        val prevWinItmVls = FSet.getPrevWinItems()
+        val intersectVls = prevWinItmVls.intersect(foundValSet)
+        for (size <- 2 to intersectVls.size)
+          for (foundVal <- intersectVls.subsets(size))
             if (FSet.contains(foundVal))
               FSet.countItem(foundVal)
+            else FSet.addCompItem(foundVal)
+//        for (size <- 2 to foundValSet.size)
+//          for (foundVal <- foundValSet.subsets(size))
+//            if (FSet.contains(foundVal))
+//              FSet.countItem(foundVal)
       }
     }
 
     FSet.uppdateItemsSupport((Sup: Float, Cnt: Int, nWin: Int) => (Sup + Cnt.toFloat / transactionCount) / nWin.toFloat)
     FSet.checkMinBound(minSup)
-    println(FSet)
-    FSet.updateCompounds()
+//    println("\nWINDATA: " + nWinData)
+    println("\nFSET:  "+FSet)
+//    FSet.updateCompounds()
   }
 }
 
 class Item[T](value: T) {
-  protected var (count, nWindow) = (0, 1)
+  protected var (count, nWindow) = (1, 1)
   protected var support = 0.0F
 
-  def getValue() = value
+  def getValue  = value
 
-  def getSupport() = support
+  def getSupport = support
 
-  def getCount() = count
+  def getCount = count
 
-  override def toString = "V: " + value.toString() + "-C: " + count.toString() + "-W: " + nWindow.toString() + "-S: " + support.toString()
+  override def toString = "   V:" + value.toString() + " C:" + count.toString() + " W:" + nWindow.toString() + " S:" + support.toString()
 
   def resetCount() {
     count = 0
@@ -98,8 +107,9 @@ class Item[T](value: T) {
     count += 1
   }
 
-  def countOneWin() {
-    nWindow += 1
+  def countOneWin(winSize: Int) {
+    if (nWindow < winSize)
+      nWindow += 1
   }
 
   def updateSupport(func: (Float, Int, Int) => Float): Float = {
@@ -111,6 +121,7 @@ class Item[T](value: T) {
 class ItemSet[T] {
   protected val singletons = mutable.Set[Item[T]]()
   protected val compounds = mutable.Set[Item[Set[T]]]()
+  protected var prevWinItemVals = Set[T]()
 
   def addSingItem(itmVal: T) {
     if (!this.contains(itmVal))
@@ -138,28 +149,28 @@ class ItemSet[T] {
       itm.resetCount()
   }
 
-  def countOneWin() {
+  def countOneWin(winSize: Int) {
     for(itm <- singletons)
-      itm.countOneWin()
+      itm.countOneWin(winSize)
 
     for(itm <- compounds)
-      itm.countOneWin()
+      itm.countOneWin(winSize)
   }
 
-  def updateCompounds() {
-    val singletonsStr = getItemsValSet()
-    for (s <- 2 to singletonsStr.size)
-      for (itmVl <- singletonsStr.subsets(s))
-        if(!this.contains(itmVl))
-          compounds += new Item[Set[T]](itmVl)
-  }
+//  def updateCompounds() {
+//    val singletonsStr = getItemsValSet()
+//    for (s <- 2 to singletonsStr.size)
+//      for (itmVl <- singletonsStr.subsets(s))
+//        if(!this.contains(itmVl))
+//          compounds += new Item[Set[T]](itmVl)
+//  }
 
   def countItem(itmVal: T): Int = {
     var res = 0
     for (itm <- singletons)
-      if (itm.getValue() == itmVal) {
+      if (itm.getValue == itmVal) {
         itm.countOne()
-        res = itm.getCount()
+        res = itm.getCount
       }
     res
   }
@@ -167,9 +178,9 @@ class ItemSet[T] {
   def countItem(itmVal: Set[T]): Int = {
     var res = 0
     for (itm <- compounds)
-      if (itm.getValue() == itmVal) {
+      if (itm.getValue == itmVal) {
         itm.countOne()
-        res = itm.getCount()
+        res = itm.getCount
       }
     res
   }
@@ -177,7 +188,7 @@ class ItemSet[T] {
   def contains(itmVal: T): Boolean = {
     var result = false
     for (i <- singletons)
-      if (i.getValue() == itmVal)
+      if (i.getValue == itmVal)
         result = true
     result
   }
@@ -185,7 +196,7 @@ class ItemSet[T] {
   def contains(itmVal: Set[T]): Boolean = {
     var result = false
     for (i <- compounds)
-      if (i.getValue() == itmVal)
+      if (i.getValue == itmVal)
         result = true
     result
   }
@@ -213,10 +224,10 @@ class ItemSet[T] {
 
   // Returns all values in the set
   def getItemsValSet(): Set[T] = {
-    var result = Set[T]()
+    val result = mutable.Set[T]()
     for (i <- singletons)
-      result += i.getValue()
-    result
+      result += i.getValue
+    Set() ++ result
   }
 
   def uppdateItemsSupport(func: (Float, Int, Int) => Float) {
@@ -225,13 +236,16 @@ class ItemSet[T] {
   }
 
   def checkMinBound(minSup: Float) {
-    singletons.foreach(x => {
-      if (x.getSupport() < minSup) singletons -= x
-    })
-    compounds.foreach(x => {
-      if (x.getSupport() < minSup) compounds -= x
-    })
+    val notInBoundSing = mutable.Set[Item[T]]()
+    val notInBoundComp = mutable.Set[Item[Set[T]]]()
+    singletons.foreach(x => if (x.getSupport < minSup) notInBoundSing += x)
+    compounds.foreach(x => if (x.getSupport < minSup) notInBoundComp += x)
+    singletons --= notInBoundSing
+    compounds --= notInBoundComp
+    prevWinItemVals = getItemsValSet()
   }
+
+  def getPrevWinItems()  = prevWinItemVals
 }
 
 class transactionList[T] {

@@ -2,7 +2,6 @@ package com.tahlilafzar.sample
 
 import scala.io.Source
 import scala.collection.mutable
-import com.tahlilafzar.sample.FreqTempPatt_DS
 /**
  * Created with IntelliJ IDEA.
  * User: GHC
@@ -12,12 +11,13 @@ import com.tahlilafzar.sample.FreqTempPatt_DS
  */
 object MainTest_FreqTempPatt_DS {
   def main(args: Array[String]){
-    val (minSup: Float, winSize: Int)  = (0.9F, 2)
+    val (minSup: Float, winSize: Int)  = (0.6F, 4)
     val fileName = "DbDatEncoded"
     val fileStr = mutable.Buffer[String]()
     val bufferStr = mutable.Buffer[String]()
 
     val assocRuleAlg = new FreqTempPatt_DS(minSup, winSize, bufferStr)
+    printf("MinSup: %.2f\t WindowsSize: %d\n", minSup, winSize)
 
     for (line <- Source.fromFile(fileName).getLines())
       fileStr += line
@@ -25,7 +25,6 @@ object MainTest_FreqTempPatt_DS {
     var i = 1
     for(trans <- fileStr) {
       if(i > 5){
-        println(bufferStr)
         assocRuleAlg.runAlgorithm()
         i = 1
       }
