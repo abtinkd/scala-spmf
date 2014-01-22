@@ -11,13 +11,12 @@ import scala.collection.mutable
  */
 object MainTest_FreqTempPatt_DS {
   def main(args: Array[String]){
-    val (minSup: Float, winSize: Int)  = (0.6F, 4)
-    val fileName = "DbDatEncoded"
+    val (minSup: Float, winSize: Int)  = (0.4F, 3)
+    val fileName = "DbDatEncodedLite"
     val fileStr = mutable.Buffer[String]()
     val bufferStr = mutable.Buffer[String]()
 
-    val assocRuleAlg = new FreqTempPatt_DS(minSup, winSize, bufferStr)
-    printf("MinSup: %.2f\t WindowsSize: %d\n", minSup, winSize)
+    val assocRuleAlg = new FreqTempPatt_DS(minSup, winSize, bufferStr, "ResultLite")
 
     for (line <- Source.fromFile(fileName).getLines())
       fileStr += line
