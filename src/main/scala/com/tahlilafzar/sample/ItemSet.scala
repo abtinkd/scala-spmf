@@ -104,11 +104,25 @@ class ItemSet[T] {
     compounds.foreach(x => x.updateATF(curTime))
   }
 
-  def checkMinBound(minSup: Float) {
+  def checkMinBound(minSup: Float, curTime: Long, considerATF: Boolean = false) {
     val notInBoundSing = mutable.Set[Item[T]]()
     val notInBoundComp = mutable.Set[Item[Set[T]]]()
-    singletons.foreach(x => if (x.getSupport < minSup) notInBoundSing += x)
-    compounds.foreach(x => if (x.getSupport < minSup) notInBoundComp += x)
+    if (considerATF) {
+      singletons.foreach(x => if (x.getSupport < minSup) {
+        val regLine = x.runRegression
+        if ((regLine._1 + regLine._2 * curTime) < minSup)
+          notInBoundSing += x
+      })
+      compounds.foreach(x => if (x.getSupport < minSup) {
+        val regLine = x.runRegression
+        if ((regLine._1 + regLine._2 * curTime) < minSup)
+          notInBoundComp += x
+      })
+    }
+    else {
+      singletons.foreach(x => if (x.getSupport < minSup) notInBoundSing += x)
+      compounds.foreach(x => if (x.getSupport < minSup) notInBoundComp += x)
+    }
     singletons --= notInBoundSing
     compounds --= notInBoundComp
     prevWinItemVals = getItemsValSet

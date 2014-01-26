@@ -11,12 +11,13 @@ import scala.collection.mutable
  */
 object MainTest_FreqTempPatt_DS {
   def main(args: Array[String]){
-    val (minSup: Float, winSize: Int)  = (0.4F, 3)
-    val fileName = "DbDatEncodedLite"
+    val (minSup: Float, winSize: Int)  = (0.8F, 3)
+    val useRegression = true
+    val fileName = "DbDatEncoded.txt"
     val fileStr = mutable.Buffer[String]()
     val bufferStr = mutable.Buffer[String]()
 
-    val assocRuleAlg = new FreqTempPatt_DS(minSup, winSize, bufferStr, "ResultLite")
+    val assocRuleAlg = new FreqTempPatt_DS(minSup, winSize, bufferStr, fileName)
 
     for (line <- Source.fromFile(fileName).getLines())
       fileStr += line
@@ -24,7 +25,7 @@ object MainTest_FreqTempPatt_DS {
     var i = 1
     for(trans <- fileStr) {
       if(i > 5){
-        assocRuleAlg.runAlgorithm()
+        assocRuleAlg.runAlgorithm(useRegression)
         i = 1
       }
       else {

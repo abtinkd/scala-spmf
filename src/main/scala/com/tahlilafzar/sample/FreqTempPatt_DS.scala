@@ -39,7 +39,7 @@ class FreqTempPatt_DS(minSup: Float, window_size: Int, bufferStr: mutable.Buffer
     bufferStr.clear()
   }
 
-  def runAlgorithm() = {
+  def runAlgorithm(useRegression: Boolean) = {
     read_Clear_Buffer()
 
     FSet.resetCount()
@@ -71,11 +71,14 @@ class FreqTempPatt_DS(minSup: Float, window_size: Int, bufferStr: mutable.Buffer
       }
     }
 
-    FSet.updateItemsSupport((Sup: Float, Cnt: Int, nWin: Int) => (Sup + Cnt.toFloat / transactionCount) / nWin.toFloat)
+    // 1: Update items support -> 2: update ATF of the remained items 3: Eliminate weak rules
+    FSet.updateItemsSupport((Sup: Float, Cnt: Int, nWin: Int) => (Sup * (nWin-1) + Cnt.toFloat / transactionCount) / nWin.toFloat)
     FSet.updateItemsATF(timeCount)
-    FSet.checkMinBound(minSup)
-    save_results("\n" + timeCount + "-WINDATA:\n" + nWinData, addressStr + "_RawData")
-    save_results("\n" + timeCount + "-FSET:\n" + FSet, addressStr + "_FSet")
+    FSet.checkMinBound(minSup, timeCount, useRegression)
+    save_results("\n" + timeCount + " -Considered Regression:" + useRegression + " -WINDATA:\n" + nWinData,
+      addressStr + "_RawData")
+    save_results("\n" + timeCount + " -Considered Regression:" + useRegression + " -FSET:\n" + FSet,
+      addressStr + "_FSet")
   }
 
   def save_results(res: String, addr: String) {

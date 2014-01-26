@@ -19,6 +19,8 @@ class Item[T](val value: T, timeAdded: Long) {
 
   def getCount = count
 
+  def getATF = ATF
+
   override def toString = "  [v(" + value.toString + ")c(" + count.toString + ")w(" +
     nWindow.toString + ")su(" + support.toString + ")]"
 
