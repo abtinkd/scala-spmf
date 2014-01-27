@@ -1,7 +1,7 @@
 package com.tahlilafzar.sample
 
 import scala.collection.mutable
-import java.io.FileWriter
+import java.io._
 
 
 /**
@@ -18,11 +18,11 @@ class FreqTempPatt_DS(minSup: Float, window_size: Int, bufferStr: mutable.Buffer
   protected var transactionCount = 0
 
   // reads from buffer and then clears it for new data
-  def read_Clear_Buffer() {
+  def read_buffer_then_clear() {
     timeCount += 1
     if (timeCount > window_size){
-      nWinData -= nWinData.head
       transactionCount -= nWinData.head.size
+      nWinData -= nWinData.head
     }
 
     val transList = new transactionList[String]
@@ -40,7 +40,7 @@ class FreqTempPatt_DS(minSup: Float, window_size: Int, bufferStr: mutable.Buffer
   }
 
   def runAlgorithm(useRegression: Boolean) = {
-    read_Clear_Buffer()
+    read_buffer_then_clear()
 
     FSet.resetCount()
     FSet.countOneWin(window_size)
@@ -87,7 +87,8 @@ class FreqTempPatt_DS(minSup: Float, window_size: Int, bufferStr: mutable.Buffer
     if (addr == "")
       print(title + res)
     else {
-      val writer = new FileWriter(addr+"_"+minSup+"_"+window_size+".txt", true)
+      val writer = new OutputStreamWriter(new FileOutputStream(addr+"_"+minSup+"_"+window_size+".txt", true), "UTF-8")
+//      val writer = new FileWriter(addr+"_"+minSup+"_"+window_size+".txt", true)
       writer.write(title + res)
       writer.close()
     }

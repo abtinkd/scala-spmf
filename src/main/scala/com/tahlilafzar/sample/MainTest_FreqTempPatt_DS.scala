@@ -12,8 +12,8 @@ import scala.collection.mutable
 object MainTest_FreqTempPatt_DS {
   def main(args: Array[String]){
     val (minSup: Float, winSize: Int)  = (0.8F, 3)
-    val useRegression = true
-    val fileName = "DbDatEncoded.txt"
+    val useRegression = false
+    val fileName = "DBData\\DoctorDBDat.txt"
     val fileStr = mutable.Buffer[String]()
     val bufferStr = mutable.Buffer[String]()
 
