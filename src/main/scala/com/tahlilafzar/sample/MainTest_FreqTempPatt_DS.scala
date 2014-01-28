@@ -24,7 +24,7 @@ object MainTest_FreqTempPatt_DS {
 
     var i = 1
     for(trans <- fileStr) {
-      if(i > 5){
+      if(i > 10){
         assocRuleAlg.runAlgorithm(useRegression)
         i = 1
       }

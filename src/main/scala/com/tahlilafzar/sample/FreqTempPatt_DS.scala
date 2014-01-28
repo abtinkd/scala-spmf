@@ -16,6 +16,11 @@ class FreqTempPatt_DS(minSup: Float, window_size: Int, bufferStr: mutable.Buffer
   protected val FSet = new ItemSet[String]()
   protected var timeCount = 0L
   protected var transactionCount = 0
+  protected val writerFSet = new OutputStreamWriter(new FileOutputStream(
+    addressStr + "_FSet" + "_"+minSup+"_"+window_size+".txt", true), "UTF-8")
+  protected val writerData = new OutputStreamWriter(new FileOutputStream(
+    addressStr + "_RawData" + "_"+minSup+"_"+window_size+".txt", true), "UTF-8")
+  //      val writer = new FileWriter(addr+"_"+minSup+"_"+window_size+".txt", true)
 
   // reads from buffer and then clears it for new data
   def read_buffer_then_clear() {
@@ -76,21 +81,17 @@ class FreqTempPatt_DS(minSup: Float, window_size: Int, bufferStr: mutable.Buffer
     FSet.updateItemsATF(timeCount)
     FSet.checkMinBound(minSup, timeCount, useRegression)
     save_results("\n" + timeCount + " -Considered Regression:" + useRegression + " -WINDATA:\n" + nWinData,
-      addressStr + "_RawData")
+      writerData)
     save_results("\n" + timeCount + " -Considered Regression:" + useRegression + " -FSET:\n" + FSet,
-      addressStr + "_FSet")
+      writerFSet)
   }
 
-  def save_results(res: String, addr: String) {
+  def save_results(res: String, outStream: OutputStreamWriter) {
     val title = "Min-Support = " + minSup + "   Window-Size = " + window_size + "\n*************************************\n"
 
-    if (addr == "")
+    if (addressStr == "")
       print(title + res)
-    else {
-      val writer = new OutputStreamWriter(new FileOutputStream(addr+"_"+minSup+"_"+window_size+".txt", true), "UTF-8")
-//      val writer = new FileWriter(addr+"_"+minSup+"_"+window_size+".txt", true)
-      writer.write(title + res)
-      writer.close()
-    }
+    else
+      outStream.write(title + res)
   }
 }
