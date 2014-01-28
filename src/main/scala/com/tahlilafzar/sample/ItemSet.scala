@@ -1,6 +1,8 @@
 package com.tahlilafzar.sample
 
 import scala.collection.mutable
+import java.lang.IllegalArgumentException
+import scala.IllegalArgumentException
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,29 +22,33 @@ class ItemSet[T] {
   }
 
   def addCompItem(itmVal: Set[T], time: Long) {
-//    if (!this.contains(itmVal))
-//      compounds += new Item[Set[T]](itmVal, time)
     if(this.contains(itmVal))
       compounds.foreach(itm => if(itm.getValue.subsetOf(itmVal)) itm.countOne())
     else if(itmVal.size > 1){
-      val extraNewComp = mutable.Set[Item[Set[T]]]()
+      var extraNewComp = Set[Item[Set[T]]]()
       compounds.foreach(itm => {
         if (itm.getValue.subsetOf(itmVal))
           itm.countOne()
         else {
-          val intersect = itm.getValue.intersect(itmVal)
+          val intersect = itmVal.intersect(itm.getValue)
           if (intersect.size > 1 && !this.contains(intersect)) {
             val newCompItem = new Item[Set[T]](intersect, itm.getATF.t_s)
             newCompItem.copyFrom(itm)
             newCompItem.countOne()
-            extraNewComp += newCompItem
+            if (extraNewComp.forall(x => x.getValue != intersect))
+              extraNewComp += newCompItem
           }
         }
       })
-      compounds += new Item[Set[T]](itmVal, time)
       compounds ++= extraNewComp
+      if(extraNewComp.forall(x => x.getValue!= itmVal))
+        compounds += new Item[Set[T]](itmVal, time)
     }
   }
+
+  def getSingletons = singletons
+
+  def getCompounds = compounds
 
   override def toString = {
     var result = "{"
@@ -98,9 +104,16 @@ class ItemSet[T] {
 
   def contains(itmVal: Set[T]): Boolean = {
     var result = false
-    for (i <- compounds)
-      if (i.getValue == itmVal)
+    var count = 0
+    for (i <- compounds.toList)
+      if (i.getValue == itmVal) {
         result = true
+        count += 1
+      }
+    if (count > 1) {
+      println(count + itmVal.toString())
+      throw new IllegalArgumentException
+    }
     result
   }
 
