@@ -19,7 +19,21 @@ class Item[T](val value: T, timeAdded: Long) {
 
   def getCount = count
 
+  def getWin = nWindow
+
   def getATF = ATF
+
+  def copyFrom(otherItm: Item[T]){
+    count = otherItm.count
+    nWindow = otherItm.nWindow
+    support = otherItm.support
+
+    ATF.sum_f = otherItm.ATF.sum_f
+    ATF.sum_f_2 = otherItm.ATF.sum_f_2
+    ATF.sum_t = otherItm.ATF.sum_t
+    ATF.sum_t_2 = otherItm.ATF.sum_t_2
+    ATF.sum_t_f = otherItm.ATF.sum_t_f
+  }
 
   override def toString = "  [v(" + value.toString + ")c(" + count.toString + ")w(" +
     nWindow.toString + ")su(" + support.toString + ")]"

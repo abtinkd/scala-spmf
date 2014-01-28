@@ -20,8 +20,28 @@ class ItemSet[T] {
   }
 
   def addCompItem(itmVal: Set[T], time: Long) {
-    if (!this.contains(itmVal))
+//    if (!this.contains(itmVal))
+//      compounds += new Item[Set[T]](itmVal, time)
+    if(this.contains(itmVal))
+      compounds.foreach(itm => if(itm.getValue.subsetOf(itmVal)) itm.countOne())
+    else if(itmVal.size > 1){
+      val extraNewComp = mutable.Set[Item[Set[T]]]()
+      compounds.foreach(itm => {
+        if (itm.getValue.subsetOf(itmVal))
+          itm.countOne()
+        else {
+          val intersect = itm.getValue.intersect(itmVal)
+          if (intersect.size > 1 && !this.contains(intersect)) {
+            val newCompItem = new Item[Set[T]](intersect, itm.getATF.t_s)
+            newCompItem.copyFrom(itm)
+            newCompItem.countOne()
+            extraNewComp += newCompItem
+          }
+        }
+      })
       compounds += new Item[Set[T]](itmVal, time)
+      compounds ++= extraNewComp
+    }
   }
 
   override def toString = {

@@ -68,11 +68,13 @@ class FreqTempPatt_DS(minSup: Float, window_size: Int, bufferStr: mutable.Buffer
         //counting compound items
         val prevWinItmVls = FSet.getPrevWinItems
         val intersectVls = prevWinItmVls.intersect(foundValSet)
-        for (size <- 2 to intersectVls.size)
-          for (foundVal <- intersectVls.subsets(size))
-            if (FSet.contains(foundVal))
-              FSet.countItem(foundVal)
-            else FSet.addCompItem(foundVal, timeCount)
+        if (intersectVls.size > 1)
+          FSet.addCompItem(intersectVls, timeCount)
+//        for (size <- 2 to intersectVls.size)
+//          for (foundVal <- intersectVls.subsets(size))
+//            if (FSet.contains(foundVal))
+//              FSet.countItem(foundVal)
+//            else FSet.addCompItem(foundVal, timeCount)
       }
     }
 
