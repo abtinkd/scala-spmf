@@ -91,7 +91,9 @@ class FreqTempPatt_DS(minSup: Float, window_size: Int, bufferStr: mutable.Buffer
 
     if (addressStr == "")
       print(title + res)
-    else
+    else  {
       outStream.write(title + res)
+      outStream.flush()
+    }
   }
 }

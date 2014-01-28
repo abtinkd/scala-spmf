@@ -11,9 +11,9 @@ import scala.collection.mutable
  */
 object MainTest_FreqTempPatt_DS {
   def main(args: Array[String]){
-    val (minSup: Float, winSize: Int)  = (0.8F, 3)
+    val (minSup: Float, winSize: Int)  = (0.95F, 2)
     val useRegression = false
-    val fileName = "DBData\\DoctorDBDat.txt"
+    val fileName = "DBData\\DbDatEncoded.txt"
     val fileStr = mutable.Buffer[String]()
     val bufferStr = mutable.Buffer[String]()
 
@@ -24,7 +24,7 @@ object MainTest_FreqTempPatt_DS {
 
     var i = 1
     for(trans <- fileStr) {
-      if(i > 10){
+      if(i > 5){
         assocRuleAlg.runAlgorithm(useRegression)
         i = 1
       }
