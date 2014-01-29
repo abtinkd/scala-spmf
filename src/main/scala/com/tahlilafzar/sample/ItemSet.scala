@@ -137,7 +137,35 @@ class ItemSet[T] {
     compounds.foreach(x => x.updateATF(curTime))
   }
 
-  def checkMinBound(minSup: Float, curTime: Long, considerATF: Boolean = false) {
+  def isCompatible = {
+    var result = true
+    val cmpArr = compounds.toArray
+    for(singItm <- singletons)
+      if(!compounds.forall(cmpItm => !(cmpItm.getValue.contains(singItm.getValue) && singItm.getSupport < cmpItm.getSupport))) // none of the compounds have a singleton with smaller support
+        result = false
+    for(i <- 0 until cmpArr.size)
+      for(j <- i+1 until cmpArr.size)
+        if(cmpArr(i).getValue.subsetOf(cmpArr(j).getValue) && cmpArr(i).getSupport < cmpArr(j).getSupport)
+          result = false
+    result
+  }
+
+  def makeCompatible() {
+    val notCompatible = mutable.Set[Item[Set[T]]]()
+    val cmpArr = compounds.toArray
+    for(singItm <- singletons)
+      compounds.foreach(cmpItm =>
+        if(cmpItm.getValue.contains(singItm.getValue) && singItm.getSupport < cmpItm.getSupport)
+          notCompatible += cmpItm
+      )
+    for(i <- 0 until cmpArr.size)
+      for(j <- i+1 until cmpArr.size)
+        if(cmpArr(i).getValue.subsetOf(cmpArr(j).getValue) && cmpArr(i).getSupport < cmpArr(j).getSupport)
+          notCompatible += cmpArr(i)
+    compounds --= notCompatible
+  }
+
+  def makeSupportCompatible(minSup: Float, curTime: Long, considerATF: Boolean = false) {
     val notInBoundSing = mutable.Set[Item[T]]()
     val notInBoundComp = mutable.Set[Item[Set[T]]]()
     if (considerATF) {
@@ -156,6 +184,14 @@ class ItemSet[T] {
       singletons.foreach(x => if (x.getSupport < minSup) notInBoundSing += x)
       compounds.foreach(x => if (x.getSupport < minSup) notInBoundComp += x)
     }
+
+//    for(cmpItm <- compounds)
+//      for(x <- notInBoundComp)
+//        if(x.getValue != cmpItm.getValue && !notInBoundComp.contains(cmpItm) && x.getValue.subsetOf(cmpItm.getValue)){
+//          println("x:"+x.getSupport+" compound:"+ cmpItm.getSupport)
+//          throw new IllegalStateException
+//        }
+
     singletons --= notInBoundSing
     compounds --= notInBoundComp
     prevWinItemVals = getItemsValSet

@@ -81,7 +81,7 @@ class FreqTempPatt_DS(minSup: Float, window_size: Int, bufferStr: mutable.Buffer
     // 1: Update items support -> 2: update ATF of the remained items 3: Eliminate weak rules
     FSet.updateItemsSupport((Sup: Float, Cnt: Int, nWin: Int) => (Sup * (nWin-1) + Cnt.toFloat / transactionCount) / nWin.toFloat)
     FSet.updateItemsATF(timeCount)
-    FSet.checkMinBound(minSup, timeCount, useRegression)
+    FSet.makeSupportCompatible(minSup, timeCount, useRegression)
     update_Patterns(timeCount)
 
     save_results("\n" + timeCount + " -Considered Regression:" + useRegression + " -WINDATA:\n" + nWinData,
