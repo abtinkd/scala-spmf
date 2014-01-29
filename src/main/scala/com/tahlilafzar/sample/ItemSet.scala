@@ -96,7 +96,7 @@ class ItemSet[T] {
 
   def contains(itmVal: T): Boolean = {
     var result = false
-    for (i <- singletons)
+    for (i <- singletons if !result)
       if (i.getValue == itmVal)
         result = true
     result
@@ -104,16 +104,9 @@ class ItemSet[T] {
 
   def contains(itmVal: Set[T]): Boolean = {
     var result = false
-    var count = 0
-    for (i <- compounds.toList)
-      if (i.getValue == itmVal) {
+    for (i <- compounds.toList if !result)
+      if (i.getValue == itmVal)
         result = true
-        count += 1
-      }
-    if (count > 1) {
-      println(count + itmVal.toString())
-      throw new IllegalArgumentException
-    }
     result
   }
 
@@ -137,14 +130,28 @@ class ItemSet[T] {
     compounds.foreach(x => x.updateATF(curTime))
   }
 
-  def isCompatible = {
+  def isSingCompCompatible = {
+    compounds.forall(x => x.getValue.forall(y => this.contains(y)))
+  }
+
+  def isCompoundCompatible = {
     var result = true
     val cmpArr = compounds.toArray
-    for(singItm <- singletons)
+    for(s<-0 until cmpArr.size if result)
+      for(i<-s+1 until cmpArr.size if result)
+        if(!this.contains(cmpArr(s).getValue & cmpArr(i).getValue)) // check if intersect is already in the ItemSet
+          result = false
+    result
+  }
+
+  def isSupportCompatible = {
+    var result = true
+    val cmpArr = compounds.toArray
+    for(singItm <- singletons if result)
       if(!compounds.forall(cmpItm => !(cmpItm.getValue.contains(singItm.getValue) && singItm.getSupport < cmpItm.getSupport))) // none of the compounds have a singleton with smaller support
         result = false
-    for(i <- 0 until cmpArr.size)
-      for(j <- i+1 until cmpArr.size)
+    for(i <- 0 until cmpArr.size if result)
+      for(j <- i+1 until cmpArr.size if result)
         if(cmpArr(i).getValue.subsetOf(cmpArr(j).getValue) && cmpArr(i).getSupport < cmpArr(j).getSupport)
           result = false
     result
@@ -165,9 +172,10 @@ class ItemSet[T] {
     compounds --= notCompatible
   }
 
-  def makeSupportCompatible(minSup: Float, curTime: Long, considerATF: Boolean = false) {
+  def deleteLowSupportItems(minSup: Float, curTime: Long, considerATF: Boolean) {
     val notInBoundSing = mutable.Set[Item[T]]()
     val notInBoundComp = mutable.Set[Item[Set[T]]]()
+    
     if (considerATF) {
       singletons.foreach(x => if (x.getSupport < minSup) {
         val regLine = x.runRegression
@@ -184,16 +192,25 @@ class ItemSet[T] {
       singletons.foreach(x => if (x.getSupport < minSup) notInBoundSing += x)
       compounds.foreach(x => if (x.getSupport < minSup) notInBoundComp += x)
     }
-
-//    for(cmpItm <- compounds)
-//      for(x <- notInBoundComp)
-//        if(x.getValue != cmpItm.getValue && !notInBoundComp.contains(cmpItm) && x.getValue.subsetOf(cmpItm.getValue)){
-//          println("x:"+x.getSupport+" compound:"+ cmpItm.getSupport)
-//          throw new IllegalStateException
-//        }
-
+    
     singletons --= notInBoundSing
     compounds --= notInBoundComp
+
+    val notCompatible = mutable.Set[Item[Set[T]]]()
+    val replaceWith = mutable.Set[Item[Set[T]]]()
+    for(badSingItm <- notInBoundSing)
+      compounds.foreach(x =>
+        if(x.getValue.contains(badSingItm.getValue)) {
+          notCompatible += x
+
+        }
+      )
+    for(badCmpItm <- notInBoundComp)
+      compounds.foreach(x =>
+        if(badCmpItm.getValue.subsetOf(x.getValue))
+          notCompatible += x
+      )    
+    compounds --= notCompatible
     prevWinItemVals = getItemsValSet
   }
 
